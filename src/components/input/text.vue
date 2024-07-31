@@ -2,7 +2,7 @@
 interface InputTextProps { label: string; placeholder?: string; info?: string; name: string; required?: boolean; modelValue: string; };
 
 withDefaults(defineProps<InputTextProps>(), { placeholder: "", info: "", required: false });
-defineEmits(['update:modelValue']);
+defineEmits(['update:modelValue', 'blured']);
 
 </script>
 <template>
@@ -13,7 +13,8 @@ defineEmits(['update:modelValue']);
         </div>
         <div class="input-text__field">
             <input class="input-text__field--input" type="text" :placeholder="placeholder" :value="modelValue" :name="name"
-                @input="(event: InputEvent) => $emit('update:modelValue', (event.target as HTMLInputElement).value)">
+                @input="(event: InputEvent) => $emit('update:modelValue', (event.target as HTMLInputElement).value)"
+                @blur="() => $emit('blured')">
             <span v-if="!!modelValue.trim()" class="input-text__clear rounded-circle"
                 @click="() => $emit('update:modelValue', '')">x</span>
         </div>

@@ -1,7 +1,15 @@
 <script setup lang="ts">
 import InputText from "@/components/input/text.vue";
 import { ref, computed } from "vue";
-interface AddressAddProps { modelValue: { firstName: string; lastName: string; mobile: string; phone: string; address: string; } }
+interface AddressAddProps { modelValue: { firstName: string; lastName: string; mobile: string; phone: string; address: string; gender: "male" | "femaile" } }
+
+const rules = ref({
+    mobile: { fn: (value: string) => (!!value && /09[0-9]{9}/.test(value)), message: 'مقدار تلفن ثابت درست نمی‌باشد', blured: false },
+    phone: { fn: (value: string) => (!!value && /0[0-9]{10}/.test(value)), message: 'مقدار تلفن همراه درست نمی‌باشد', blured: false },
+    firstName: { fn: (value: string) => (!!value && `${value}`.trim().length >= 3), message: 'این مقدار الزامیست و حداقل 3 کاراکتر', blured: false },
+    lastName: { fn: (value: string) => (!!value && `${value}`.trim().length >= 3), message: 'این مقدار الزامیست و حداقل 3 کاراکتر', blured: false },
+    address: { fn: (value: string) => (!!value && `${value}`.trim().length >= 10), message: 'این مقدار الزامیست و حداقل 10 کاراکتر', blured: false },
+});
 const props = defineProps<AddressAddProps>();
 const emit = defineEmits(['update:modelValue', 'submit']);
 const user = computed({
@@ -13,12 +21,35 @@ const user = computed({
 <template>
     <form class="address-add card" @submit.prevent="() => $emit('submit')">
         <span class="address-add__title">لطفا مشخصات و آدرس خود را وارد کنید</span>
-        <InputText v-model="user.firstName" name="firstName" label="نام" placeholder="مثال: محمد" required />
-        <InputText v-model="user.lastName" name="lastName" label="نام خانوادگی" placeholder="مثال: محمدی" required />
-        <InputText v-model="user.mobile" name="mobile" label="شماره تلفن همراه" placeholder="مثال: 0912212345687"
-            required />
-        <InputText v-model="user.phone" name="phone" label="شماره تلفن ثابت" placeholder="مثال: 02144256780" />
-        <InputText v-model="user.address" name="address" label="آدرس" required />
+        <div>
+            <InputText @blured="rules.firstName.blured = true" v-model="user.firstName" name="firstName" label="نام"
+                placeholder="مثال: محمد" required />
+            <span class="address-add__error" v-if="rules.firstName.blured">{{ rules.firstName.fn(user.firstName) ? '' :
+                rules.firstName.message }}</span>
+        </div>
+        <div>
+            <InputText @blured="rules.lastName.blured = true" v-model="user.lastName" name="lastName" label="نام خانوادگی"
+                placeholder="مثال: محمدی" required />
+            <span class="address-add__error" v-if="rules.lastName.blured">{{ rules.lastName.fn(user.lastName) ? '' :
+                rules.lastName.message }}</span>
+        </div>
+        <div>
+            <InputText @blured="rules.mobile.blured = true" v-model="user.mobile" name="mobile" label="شماره تلفن همراه"
+                placeholder="مثال: 0912212345687" required />
+            <span class="address-add__error" v-if="rules.mobile.blured">{{ rules.mobile.fn(user.mobile) ? '' :
+                rules.mobile.message }}</span>
+        </div>
+        <div>
+            <InputText @blured="rules.phone.blured = true" v-model="user.phone" name="phone" label="شماره تلفن ثابت"
+                placeholder="مثال: 02144256780" />
+            <span class="address-add__error" v-if="rules.phone.blured">{{ rules.phone.fn(user.phone) ? '' :
+                rules.phone.message }}</span>
+        </div>
+        <div>
+            <InputText @blured="rules.address.blured = true" v-model="user.address" name="address" label="آدرس" required />
+            <span class="address-add__error" v-if="rules.address.blured">{{ rules.address.fn(user.address) ? '' :
+                rules.address.message }}</span>
+        </div>
         <div class="address-add__gender">
             <span>جنسیت</span>
             <label>
@@ -37,11 +68,13 @@ const user = computed({
 <style lang="scss" scoped>
 .address-add {
     display: flex;
-    flex-direction: column;
     gap: 1rem;
-    display: flx;
     flex-direction: column;
-    gap: 1rem;
+
+    &__error {
+        color: var(--ac-error-color);
+        font-size: 0.75rem;
+    }
 
     &__title {
         font-size: 0.75rem;

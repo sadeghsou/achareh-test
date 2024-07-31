@@ -1,5 +1,6 @@
 <script setup>
 import AddressCard from "@/components/address/card.vue";
+import LoadingDots from "@/components/loading/dots.vue";
 import useApi from "@/composables/useApi";
 import { ref } from "vue";
 const loading = ref(false);
@@ -23,9 +24,12 @@ getAddresses();
 
 <template>
   <div class="views-address">
-    <h1 class="views-address__title">آدرس‌ها و مشخصات</h1>
-    <AddressCard class="views-address__card" v-for="(address, index) in addresses" :key="`AddressCard${index}`"
-      :address="address" />
+    <div class="views-address__container">
+      <h1 class="views-address__title">آدرس‌ها و مشخصات</h1>
+      <LoadingDots v-if="loading" />
+      <AddressCard v-else class="views-address__card" v-for="(address, index) in addresses" :key="`AddressCard${index}`"
+        :address="address" />
+    </div>
   </div>
 </template>
 <style lang="scss" scoped>
@@ -35,10 +39,18 @@ getAddresses();
   flex-direction: column;
   gap: 0.75rem;
   padding: 1rem;
+  min-height: 100vh;
+  min-height: 100svh;
 
   &__title {
     margin-top: 1.625rem;
     color: var(--ac-text-color);
+  }
+
+  &__container {
+    width: 100%;
+    max-width: 806px;
+    margin-inline: auto;
   }
 }
 </style>
