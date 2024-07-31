@@ -1,0 +1,45 @@
+/* For reset default browser styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: normal;
+}
+/* Assigning font family */
+* {
+  font-family: vazir, sans-serif;
+}
+/* define root font size */
+html {
+  font-size: 16px;
+  direction: rtl;
+}
+/* Define root color variables */
+:root {
+  --ac-primary-color: #00bfa5;
+  --ac-background-color: #f5f5f5;
+  --ac-gray1-color: #9b9b9b;
+  --ac-gray2-color: #b6b6b6;
+  --ac-gray3-color: #757575;
+  --ac-gray5-color: #e0e0e0;
+  --ac-text-color: #37474f;
+  --ac-border-color: #edf0f2;
+  --ac-field-border-color: #d4d4d4;
+}
+
+/* Define root radiuses classes*/
+.rounded {
+  border-radius: 0.25rem;
+}
+.rounded-circle {
+  border-radius: 50%;
+}
+
+/* Define card styles */
+.card {
+  background-color: white;
+  padding: 1rem;
+  border: 1px solid var(--ac-border-color);
+}
